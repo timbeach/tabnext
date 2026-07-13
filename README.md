@@ -28,8 +28,13 @@ One background service worker, event-driven, asleep between events:
 
 - **Placement:** on tab creation, the new tab is moved to just after the
   active tab (or, for tabs created already-active like Ctrl+T, after the
-  previously used tab). Tabs created within 2 s of their window's birth
-  are left alone so session restore and new windows keep their order.
+  previously used tab). The move waits 150 ms and is skipped if the tab
+  joined a tab group, was closed, or was part of a creation burst.
+  Windows are "quiet" for 2 s after creation, and bursts (creations
+  < 300 ms apart) extend the quiet — so session restore keeps its tab
+  order and its tab groups intact.
+- **Tab groups:** grouped tabs are never moved. Opening a tab from
+  inside a group places it in that group, next to you.
 - **Badge:** every tab open/close/attach/detach recounts
   `chrome.tabs.query({})` into the badge.
 
@@ -39,6 +44,8 @@ One background service worker, event-driven, asleep between events:
 - [ ] Middle-clicked link opens next to the current tab
 - [ ] Link from an external app opens next to the current tab
 - [ ] Session restore preserves tab order
+- [ ] Session restore keeps tabs in their tab groups
+- [ ] Ctrl+T from a tab inside a group opens next to it, in the group
 - [ ] New window (Ctrl+N) behaves normally
 - [ ] Badge tracks open/close across two windows
 - [ ] A second profile counts independently

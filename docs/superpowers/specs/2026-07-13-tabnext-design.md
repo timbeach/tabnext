@@ -51,12 +51,26 @@ restore races)
   the highest `lastAccessed` among the window's other tabs (`lastAccessed`
   is available without any permission, Chromium ≥121). A window with no
   other tabs → nothing to do.
-- **Session-restore / new-window guard:** `windows.onCreated` records
-  window birth times in an in-memory map; any tab created within **2 s**
-  of its window's birth is left where Brave put it. A window unknown to
-  the map (worker woke mid-flight) is treated as old → move proceeds.
-  In-memory suffices: the event burst that creates a window keeps the
-  worker alive well past the 2 s guard window.
+- **Session-restore / new-window guard (revised 2026-07-13 after manual
+  testing found restores ripping tabs out of tab groups):** a fixed 2 s
+  window-age check is not enough — restore bursts outlive it, restores
+  can target pre-existing windows, and `tabs.move` to an index outside a
+  group's span strips group membership. Two reinforcing guards instead:
+  - **Quiet window:** a window is quiet for 2 s after creation; any tab
+    created during a quiet period, or within 300 ms of the previous
+    creation in that window, extends the quiet by 1 s. A restore burst
+    shields itself for its whole duration. In-memory maps suffice: the
+    event burst keeps the worker alive.
+  - **Settle-then-verify:** the move is deferred 150 ms; the tab is then
+    re-fetched and skipped if it was closed, joined a tab group
+    (membership may be assigned only after `onCreated` fires — documented
+    behavior), or was followed by further creations (burst). Cost: a
+    Ctrl+T tab visibly hops from strip-end to its place after ~150 ms.
+- **Tab groups:** tabs created directly into a group, or grouped during
+  the settle delay, are never moved. Side effect of Chromium's own move
+  semantics: Ctrl+T while inside a group places the new tab into that
+  group (move target lands within the group's span) — accepted as
+  correct for group users.
 - **Pinned tabs:** if the active tab is pinned, Chromium clamps the moved
   unpinned tab to the first slot after the pinned block. We rely on the
   clamp rather than special-casing.
@@ -95,8 +109,9 @@ Public GitHub repo (MIT) so other Aegix/Brave users can load it.
 
 | Scenario | Behavior |
 |---|---|
-| Session restore | Window-age guard skips moves; restored order intact. |
-| New window's first tab | Same guard — left alone. |
+| Session restore (incl. tab groups) | Quiet-window + burst guards skip moves; settle re-check catches late group assignment; restored order and groups intact. |
+| Restore into a pre-existing window | Burst guard + settle re-check cover it (no window-creation event to lean on); at most the first restored tab, if ungrouped, may move. |
+| New window's first tab | Quiet window — left alone. |
 | Worker idle-killed | Next tab event re-wakes it; placement and badge are stateless recomputations. |
 | Worker wakes mid-restore (window not in map) | Treated as old window; a restore-burst tab could get moved. Rare, cosmetic, accepted. |
 | Tab created already active (Ctrl+T, new-tab button) | Reference falls back to the previously used tab via `lastAccessed`. |
