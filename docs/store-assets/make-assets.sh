@@ -48,5 +48,10 @@ magick -size 440x280 "xc:$BG" \
   screenshot-tile-preview.png
 mv screenshot-tile-preview.png tile-440x280.png
 
+# Web Store requires JPEG or 24-bit PNG with NO alpha for screenshots/tiles.
+for f in screenshot-1280x800.png tile-440x280.png; do
+  magick "$f" -background "$BG" -alpha remove -alpha off "$f"
+done
+
 rm -f penguin-tmp.png
 echo "wrote screenshot-1280x800.png tile-440x280.png"

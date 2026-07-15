@@ -15,27 +15,49 @@ count of your open tabs. Zero permissions.
 
 **Language:** English
 
-**Detailed description:**
+**Detailed description** (plain text — CWS renders no markdown):
 
-New tabs in Chromium browsers open at the far end of the tab strip.
-tabnext opens them where you actually are: immediately to the right of
-the tab you're on. Ctrl+T, middle-clicked links, links from other apps —
-everything lands next to you.
+Your new tab just opened at the far end of the tab strip. Again.
+Somewhere past tab forty, in the region cartographers mark "here be
+dragons."
 
-It also shows a live badge on its toolbar icon with the number of tabs
-you have open, so you always know how deep you are.
+tabnext fixes that. New tabs open exactly where you are: immediately to
+the right of the tab you're on. Ctrl+T, middle-clicked links, links
+from other apps — everything lands next to you, not at the end of the
+world.
 
-A Manifest V3 replacement for "Open Tabs Next to Current", which was
-retired with Manifest V2.
+And because you're clearly a person who opens tabs, the penguin on your
+toolbar keeps score: a live badge with the number of tabs you have
+open. No judgment. Just a number. (You can pretend it's judgment.)
 
-— Zero permissions. tabnext never reads your URLs, titles, or history,
-  and the install prompt reflects that: no warnings at all.
-— Tab-group friendly. Grouped tabs are never yanked out of their groups;
-  session restore keeps your order and your groups intact. Opening a tab
-  from inside a group places it in that group, next to you.
-— No settings, no popup, nothing resident. One event-driven service
-  worker that sleeps between tab events.
-— Free and open source (MIT): https://github.com/timbeach/tabnext
+THE EULOGY
+
+This is a Manifest V3 replacement for "Open Tabs Next to Current," a
+beloved extension that Chromium's MV2 retirement took from us. Rest
+easy, old friend. The penguin carries on your work.
+
+WHAT IT COSTS YOU
+
+Nothing. Not money, not privacy.
+
+• Zero permissions — install it and your browser won't warn you about
+anything, because there's nothing to warn about. tabnext never reads
+your URLs, titles, or history. It counts tabs and it moves tabs. That's
+it. That's the whole thing.
+
+• Tab-group safe — grouped tabs are never yanked out of their groups,
+and session restore keeps your order and your groups exactly as you
+left them. Open a tab from inside a group and it joins the group, right
+next to you.
+
+• Nothing resident — one event-driven service worker that sleeps
+between tab events. No settings page. No popup. No onboarding tour. It
+just does the thing.
+
+Free and open source (MIT). Two files. Read every line in about two
+minutes: https://github.com/timbeach/tabnext
+
+Works in Chrome, Brave, Edge, Vivaldi — anything Chromium ≥ 121.
 
 ## Privacy tab
 
