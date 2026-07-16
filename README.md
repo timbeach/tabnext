@@ -14,13 +14,22 @@ Chromium browser (Chromium ≥ 121).
 
 ## Install
 
+**From the Chrome Web Store (easiest):**
+[tabnext on the Chrome Web Store](https://chromewebstore.google.com/detail/tabnext/emomhgbeeiicnljgihhnnimgknknkefb)
+— works in Chrome, Brave, Edge, Vivaldi, anything Chromium ≥ 121.
+
+**From source (no store, no waiting):**
+
 1. `git clone https://github.com/timbeach/tabnext`
 2. Open `brave://extensions` (or `chrome://extensions`)
 3. Turn on **Developer mode** (top right)
 4. **Load unpacked** → select the `tabnext` directory
-5. Pin the icon if you want the tab-count badge visible
 
-Repeat per browser profile — each profile counts its own tabs.
+Either way, pin the icon if you want the tab-count badge visible. The
+badge is per profile — each profile counts its own tabs.
+
+**The story behind it:** [tabnext — Open New Browser Tabs Next to Your
+Current One](https://timbeach.com/a/tabnext/)
 
 ## How it works
 
